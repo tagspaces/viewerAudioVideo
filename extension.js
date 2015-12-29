@@ -26,7 +26,6 @@ define(function(require, exports, module) {
   exports.init = function(filePath, elementID) {
     console.log("Initalization Audio Video Viewer...");
 
-    //TODO minimize platform specific calls
     filePath = (isCordova || isWeb) ?  filePath : "file:///" + filePath;
 
     var $containerElement = $('#' + elementID);
