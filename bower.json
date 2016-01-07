@@ -1,5 +1,5 @@
 {
-  "name": "viewerAudioVideo",
+  "name": "Audio Video Player",
   "id": "viewerAudioVideo",
   "description": "A TagSpaces extension allowing playing of audio and video files.",
   "type": "viewer",
