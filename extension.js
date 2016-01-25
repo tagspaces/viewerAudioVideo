@@ -26,7 +26,7 @@ define(function(require, exports, module) {
   exports.init = function(filePath, elementID) {
     console.log("Initalization Audio Video Viewer...");
 
-    filePath = (isCordova || isWeb) ?  filePath : "file:///" + filePath;
+    filePath = (isCordova || isWeb) ?  filePath : "file://" + filePath;
 
     var $containerElement = $('#' + elementID);
     $containerElement.empty();
@@ -46,15 +46,14 @@ define(function(require, exports, module) {
     }).load(function() {
       loadSprite($(this).contents().find("body"));
       var ext = filePath.split(".").pop().toLowerCase();
-      if (extensionSupportedFileTypesVideo.indexOf(ext) !== -1) {
-        $(this).contents().find(".player").append("<video controls>");
-      } else {
-        $(this).contents().find(".player").append("<audio controls>");
+      var controls = $("<video controls>"); 
+      if (extensionSupportedFileTypesAudio.indexOf(ext) !== -1) {
+        controls = $("<audio controls>");
       }
+      controls.append("<source>").attr("src", filePath); 
+      $(this).contents().find(".js-plyr").append(controls);
 
-      this.contentWindow.plyr.setup();
-      var player = $(this).contents().find(".player").get(0).plyr;
-      player.source(filePath);
+      var player = this.contentWindow.plyr.setup('.js-plyr')[0];
       player.play();
     }));
   };
