@@ -1,29 +1,21 @@
-/* Copyright (c) 2015 The Tagspaces Authors. All rights reserved.
- * Use of this source code is governed by a AGPL3 license that 
- * can be found in the LICENSE file. */
+/* Copyright (c) 2015-2016 The TagSpaces Authors.
+ * Use of this source code is governed by the MIT license which can be found in the LICENSE.txt file. */
 
 define(function(require, exports, module) {
   "use strict";
 
   console.log("Loading player");
 
-  var extensionTitle = "AV Viewer";
   var extensionID = "viewerAudioVideo";  // ID should be equal to the directory name where the ext. is located
-  var extensionType =  "perspective";
-  var extensionIcon = "icon-list";
-  var extensionVersion = "1.0";
-  var extensionManifestVersion = 1;
-  var extensionLicense = "AGPL";
-
-  var  extensionSupportedFileTypesVideo = ["mp4", "webm", "ogv", "m4v"];
-  var  extensionSupportedFileTypesAudio = ["mp3", "ogg"];
+  var extensionSupportedFileTypesVideo = ["mp4", "webm", "ogv", "m4v"];
+  var extensionSupportedFileTypesAudio = ["mp3", "ogg"];
 
   var TSCORE = require("tscore");
 
   var extensionDirectory = TSCORE.Config.getExtensionPath() + "/" + extensionID;
   var UI;
 
-  exports.init = function(filePath, elementID) {
+  function init(filePath, elementID) {
     console.log("Initalization Audio Video Viewer...");
 
     filePath = (isCordova || isWeb) ?  filePath : "file://" + filePath;
@@ -65,25 +57,25 @@ define(function(require, exports, module) {
     });
   }
 
-  exports.viewerMode = function(isViewerMode) {
+  function viewerMode(isViewerMode) {
+
     console.log("viewerMode not supported on this extension");
   };
 
-  exports.setContent = function(content) {
+  function setContent(content) {
+
     console.log("setContent not supported on this extension");
   };
 
-  exports.getContent = function() {
+  function getContent() {
+
     console.log("getContent not supported on this extension");
   };
 
-  // Vars
-  exports.Title                   = extensionTitle;
-  exports.ID                      = extensionID;
-  exports.Type                    = extensionType;
-  exports.Icon                    = extensionIcon;
-  exports.Version                 = extensionVersion;
-  exports.ManifestVersion         = extensionManifestVersion;
-  exports.License                 = extensionLicense;
-  exports.SupportedFileTypes      = extensionSupportedFileTypesVideo.concat(extensionSupportedFileTypesAudio);
+  exports.init = init;
+  exports.getContent = getContent;
+  exports.setContent = setContent;
+  exports.viewerMode = viewerMode;
+  //exports.setFileType = setFileType;
+
 });
