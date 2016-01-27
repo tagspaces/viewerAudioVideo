@@ -4,14 +4,13 @@
 define(function(require, exports, module) {
   "use strict";
 
-  console.log("Loading player");
-
   var extensionID = "viewerAudioVideo";  // ID should be equal to the directory name where the ext. is located
   var extensionSupportedFileTypesVideo = ["mp4", "webm", "ogv", "m4v"];
   var extensionSupportedFileTypesAudio = ["mp3", "ogg"];
 
-  var TSCORE = require("tscore");
+  console.log("Loading " + extensionID);
 
+  var TSCORE = require("tscore");
   var extensionDirectory = TSCORE.Config.getExtensionPath() + "/" + extensionID;
   var UI;
 
@@ -48,7 +47,7 @@ define(function(require, exports, module) {
       var player = this.contentWindow.plyr.setup('.js-plyr')[0];
       player.play();
     }));
-  };
+  }
 
   function loadSprite(body) {
     var jqxhr = $.get(extensionDirectory + "/libs/plyr/dist/sprite.svg", function() {
@@ -60,17 +59,17 @@ define(function(require, exports, module) {
   function viewerMode(isViewerMode) {
 
     console.log("viewerMode not supported on this extension");
-  };
+  }
 
   function setContent(content) {
 
     console.log("setContent not supported on this extension");
-  };
+  }
 
   function getContent() {
 
     console.log("getContent not supported on this extension");
-  };
+  }
 
   exports.init = init;
   exports.getContent = getContent;
