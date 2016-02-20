@@ -1,28 +1,31 @@
-{
-  "name": "viewerAudioVideo",
-  "id": "viewerAudioVideo",
-  "description": "A TagSpaces extension allowing playing of audio and video files.",
-  "type": "viewer",
-  "version": "1.0.0",
-  "dependencies": {
-    "plyr": "~1.3.5"
-  },
-  "devDependencies": {},
-  "authors": [
-    "TagSpaces Authors - http://tagspaces.org",
-    "Ilian Sapundshiev - http://ilian.me"
-  ],
-  "keywords": [
-    "player",
-    "ogv",
-    "ogg"
-  ],
-  "license": "",
-  "main": [
-    "extension.js"
-  ],
-  "ignore": [
-    "Gruntfile.js"
-  ],
-  "private": true
-}
+A TagSpaces extension allowing playing of audio and video files.
+
+## Features
+
+* Playing audio and video files
+* Fullscreen mode
+
+## Used libraries
+This extension thankfully relays on the following great libraries:
+
+* [plyr](https://plyr.io/)
+
+## Installation
+
+This extensions is packaged with any new version of TagSpaces
+
+## Source code
+
+The source code of this extension is freely available on [github.com/tagspaces/viewerAudioVideo](https://github.com/tagspaces/viewerAudioVideo/)
+
+## Development
+
+If you want to extend this extensions, please follow our general [extension development guide](http://tagspaces.org/documentation/extension-development-guide)
+
+## Screenshots
+
+![Screenshot of the viewerAudioVideo](http://tagspaces.org/extensions/editorHTML/viewerAudioVideo-screenshot.png)
+
+## License
+
+[MIT](https://github.com/tagspaces/viewerAudioVideo/blob/master/LICENSE.txt)
