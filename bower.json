@@ -5,7 +5,7 @@
   "type": "viewer",
   "version": "1.0.0",
   "dependencies": {
-    "plyr": "~1.5.7"
+    "plyr": "~1.5.11"
   },
   "devDependencies": {},
   "authors": [
