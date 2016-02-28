@@ -24,7 +24,7 @@ If you want to extend this extensions, please follow our general [extension deve
 
 ## Screenshots
 
-![Screenshot of the viewerAudioVideo](http://tagspaces.org/extensions/editorHTML/viewerAudioVideo-screenshot.png)
+![Screenshot of the viewerAudioVideo](http://tagspaces.org/extensions/viewerAudioVideo/viewerAudioVideo-screenshot.png)
 
 ## License
 
