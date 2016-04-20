@@ -12,36 +12,32 @@ define(function(require, exports, module) {
 
   var TSCORE = require("tscore");
   var extensionDirectory = TSCORE.Config.getExtensionPath() + "/" + extensionID;
-  var UI;
+  var UI ,containerElID , currentFilePath, $containerElement;
 
-  function init(filePath, elementID) {
-    console.log("Initalization Audio Video Viewer...");
+  function init(filePath, containerElementID) {
+    console.log("Initalization MD Viewer...");
+    containerElID = containerElementID;
+    $containerElement = $('#' + containerElID);
 
     filePath = (isCordova || isWeb) ?  filePath : "file://" + filePath;
 
-    var $containerElement = $('#' + elementID);
+    currentFilePath = filePath;
     $containerElement.empty();
     $containerElement.css("background-color", "white");
-
-    var extPath = extensionDirectory + "/index.html";
     $containerElement.append($('<iframe>', {
+      sandbox: "allow-same-origin allow-scripts allow-modals",
       id: "iframeViewer",
-      sandbox: "allow-same-origin allow-scripts",
-      type: "content",
-      //scrolling: "no",
-      style: "background-color: white; overflow: hidden;",
-      src: extPath,
       "nwdisable": "",
-      "nwfaketop": "",
-      "allowFullScreen": ""
+      //"nwfaketop": "",
+      "src": extensionDirectory + "/index.html?&locale=" + TSCORE.currentLanguage,
     }).load(function() {
       loadSprite($(this).contents().find("body"));
       var ext = filePath.split(".").pop().toLowerCase();
-      var controls = $("<video controls>"); 
+      var controls = $("<video controls>");
       if (extensionSupportedFileTypesAudio.indexOf(ext) !== -1) {
         controls = $("<audio controls>");
       }
-      controls.append("<source>").attr("src", filePath); 
+      controls.append("<source>").attr("src", filePath);
       $(this).contents().find(".js-plyr").append(controls);
 
       var player = this.contentWindow.plyr.setup('.js-plyr')[0];
