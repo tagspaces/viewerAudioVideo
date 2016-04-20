@@ -60,7 +60,7 @@ $(document).ready(function() {
     });
   }
 
-  var $main = $("#main");
+  var $htmlContent = $("#htmlContent");
 
   var styles = ['', 'solarized-dark', 'github', 'metro-vibes', 'clearness', 'clearness-dark'];
   var currentStyleIndex = 0;
@@ -68,8 +68,56 @@ $(document).ready(function() {
     currentStyleIndex = extSettings.styleIndex;
   }
 
-  $main.removeClass();
-  $main.addClass('markdown ' + styles[currentStyleIndex]);
+  var zoomSteps = ['zoomSmallest', 'zoomSmaller', 'zoomSmall', 'zoomDefault', 'zoomLarge', 'zoomLarger', 'zoomLargest'];
+  var currentZoomState = 3;
+  if (extSettings && extSettings.zoomState) {
+    currentZoomState = extSettings.zoomState;
+  }
+
+  $htmlContent.removeClass();
+  $htmlContent.addClass('markdown ' + styles[currentStyleIndex] + " " + zoomSteps[currentZoomState]);
+
+  $("#changeStyleButton").bind('click', function() {
+    currentStyleIndex = currentStyleIndex + 1;
+    if (currentStyleIndex >= styles.length) {
+      currentStyleIndex = 0;
+    }
+    $htmlContent.removeClass();
+    $htmlContent.addClass('markdown ' + styles[currentStyleIndex] + " " + zoomSteps[currentZoomState]);
+    saveExtSettings();
+  });
+
+  $("#zoomInButton").bind('click', function() {
+    currentZoomState++;
+    if (currentZoomState >= zoomSteps.length) {
+      currentZoomState = 6;
+    }
+    $htmlContent.removeClass();
+    $htmlContent.addClass('markdown ' + styles[currentStyleIndex] + " " + zoomSteps[currentZoomState]);
+    saveExtSettings();
+  });
+
+  $("#zoomOutButton").bind('click', function() {
+    currentZoomState--;
+    if (currentZoomState < 0) {
+      currentZoomState = 0;
+    }
+    $htmlContent.removeClass();
+    $htmlContent.addClass('markdown ' + styles[currentStyleIndex] + " " + zoomSteps[currentZoomState]);
+    saveExtSettings();
+  });
+
+  $("#zoomResetButton").bind('click', function() {
+    currentZoomState = 3;
+    $htmlContent.removeClass();
+    $htmlContent.addClass('markdown ' + styles[currentStyleIndex] + " " + zoomSteps[currentZoomState]);
+    saveExtSettings();
+  });
+
+  $("#printButton").on("click", function() {
+    $(".dropdown-menu").dropdown('toggle');
+    window.print();
+  });
 
   if (isCordova) {
     $("#printButton").hide();
@@ -85,6 +133,14 @@ $(document).ready(function() {
     $('[data-i18n]').i18n();
   });
 
+  function saveExtSettings() {
+    var settings = {
+      "styleIndex": currentStyleIndex,
+      "zoomState":  currentZoomState
+    };
+    localStorage.setItem('viewerMDSettings', JSON.stringify(settings));
+  }
+
   function loadExtSettings() {
     extSettings = JSON.parse(localStorage.getItem("viewerMDSettings"));
   }
@@ -92,8 +148,8 @@ $(document).ready(function() {
 });
 
 function setContent(content, fileDirectory) {
-  var $main = $('#main');
-  $main.append(content);
+  var $htmlContent = $('#main');
+  $htmlContent.append(content);
   console.log('SHOW MD CONTENT : ' + content);
 
   $("base").attr("href", fileDirectory + "//");
@@ -112,7 +168,7 @@ function setContent(content, fileDirectory) {
   };
 
   // fixing embedding of local images
-  $main.find("img[src]").each(function() {
+  $htmlContent.find("img[src]").each(function() {
     var currentSrc = $(this).attr("src");
     if (!hasURLProtocol(currentSrc)) {
       var path = (isWeb ? "" : "file://") + fileDirectory + "/" + currentSrc;
@@ -120,7 +176,7 @@ function setContent(content, fileDirectory) {
     }
   });
 
-  $main.find("a[href]").each(function() {
+  $htmlContent.find("a[href]").each(function() {
     var currentSrc = $(this).attr("href");
     var path;
 

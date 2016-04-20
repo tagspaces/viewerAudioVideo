@@ -14,22 +14,26 @@ define(function(require, exports, module) {
   var extensionDirectory = TSCORE.Config.getExtensionPath() + "/" + extensionID;
   var UI ,containerElID , currentFilePath, $containerElement;
 
-  function init(filePath, containerElementID) {
-    console.log("Initalization MD Viewer...");
-    containerElID = containerElementID;
-    $containerElement = $('#' + containerElID);
+  function init(filePath, elementID) {
+    console.log("Initalization Audio Video Viewer...");
 
     filePath = (isCordova || isWeb) ?  filePath : "file://" + filePath;
 
-    currentFilePath = filePath;
+    var $containerElement = $('#' + elementID);
     $containerElement.empty();
     $containerElement.css("background-color", "white");
+
+    var extPath = extensionDirectory + "/index.html";
     $containerElement.append($('<iframe>', {
-      sandbox: "allow-same-origin allow-scripts allow-modals",
       id: "iframeViewer",
+      sandbox: "allow-same-origin allow-scripts",
+      type: "content",
+      //scrolling: "no",
+      style: "background-color: white; overflow: hidden;",
+      src: extPath,
       "nwdisable": "",
-      //"nwfaketop": "",
-      "src": extensionDirectory + "/index.html?&locale=" + TSCORE.currentLanguage,
+      "nwfaketop": "",
+      "allowFullScreen": ""
     }).load(function() {
       loadSprite($(this).contents().find("body"));
       var ext = filePath.split(".").pop().toLowerCase();

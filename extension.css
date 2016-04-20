@@ -12,34 +12,6 @@ html, body {
     padding: 5px;
 }
 
-.zoomSmallest {
-    zoom:70%;
-}
-
-.zoomSmaller {
-    zoom:80%;
-}
-
-.zoomSmall {
-    zoom:90%;
-}
-
-.zoomDefault {
-    zoom:100%;
-}
-
-.zoomLarge {
-    zoom:110%;
-}
-
-.zoomLarger {
-    zoom:120%;
-}
-
-.zoomLargest {
-    zoom:130%;
-}
-
 #aboutExtensionModal img {
     max-width: 100%;
 }
