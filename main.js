@@ -50,9 +50,9 @@ $(document).ready(function() {
   });  
 
   function handleLinks($element) {
-    $element.find("a[href]").each(function () {
+    $element.find("a[href]").each(function() {
       var currentSrc = $(this).attr("href");
-      $(this).bind('click', function (e) {
+      $(this).bind('click', function(e) {
         e.preventDefault();
         var msg = {command: "openLinkExternally", link: currentSrc};
         window.parent.postMessage(JSON.stringify(msg), "*");

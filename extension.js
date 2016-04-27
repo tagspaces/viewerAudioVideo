@@ -12,7 +12,7 @@ define(function(require, exports, module) {
 
   var TSCORE = require("tscore");
   var extensionDirectory = TSCORE.Config.getExtensionPath() + "/" + extensionID;
-  var UI ,containerElID , currentFilePath, $containerElement;
+  var UI, containerElID, currentFilePath, $containerElement;
 
   function init(filePath, elementID) {
     console.log("Initalization Audio Video Viewer...");
