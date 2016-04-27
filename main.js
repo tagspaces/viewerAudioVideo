@@ -10,10 +10,10 @@ var isWeb;
 
 $(document).ready(function() {
   function getParameterByName(name) {
-    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-      results = regex.exec(location.search);
-    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    name = name.replace(/[\[]/ , "\\\[").replace(/[\]]/ , "\\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)") ,
+            results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g , " "));
   }
 
   var locale = getParameterByName("locale");
@@ -24,51 +24,49 @@ $(document).ready(function() {
   isCordova = parent.isCordova;
   isWin = parent.isWin;
   isWeb = parent.isWeb;
-  
-  $(document).on('drop dragend dragenter dragover', function(event) {
+
+  $(document).on('drop dragend dragenter dragover' , function(event) {
     event.preventDefault();
   });
-  
-  $('#aboutExtensionModal').on('show.bs.modal', function() {
+
+  $('#aboutExtensionModal').on('show.bs.modal' , function() {
     $.ajax({
-      url: 'README.md',
+      url: 'README.md' ,
       type: 'GET'
-    })
-    .done(function(mdData) {
+    }).done(function(mdData) {
       //console.log("DATA: " + mdData);
       if (marked) {
         var modalBody = $("#aboutExtensionModal .modal-body");
-        modalBody.html(marked(mdData, { sanitize: true }));
+        modalBody.html(marked(mdData , {sanitize: true}));
         handleLinks(modalBody);
       } else {
         console.log("markdown to html transformer not found");
-      }        
-    })
-    .fail(function(data) {
+      }
+    }).fail(function(data) {
       console.warn("Loading file failed " + data);
     });
-  });  
+  });
 
   function handleLinks($element) {
     $element.find("a[href]").each(function() {
       var currentSrc = $(this).attr("href");
-      $(this).bind('click', function(e) {
+      $(this).bind('click' , function(e) {
         e.preventDefault();
-        var msg = {command: "openLinkExternally", link : currentSrc};
-        window.parent.postMessage(JSON.stringify(msg), "*");
+        var msg = {command: "openLinkExternally" , link: currentSrc};
+        window.parent.postMessage(JSON.stringify(msg) , "*");
       });
     });
   }
 
   var $htmlContent = $("#htmlContent");
 
-  var styles = ['', 'solarized-dark', 'github', 'metro-vibes', 'clearness', 'clearness-dark'];
+  var styles = ['' , 'solarized-dark' , 'github' , 'metro-vibes' , 'clearness' , 'clearness-dark'];
   var currentStyleIndex = 0;
   if (extSettings && extSettings.styleIndex) {
     currentStyleIndex = extSettings.styleIndex;
   }
 
-  var zoomSteps = ['zoomSmallest', 'zoomSmaller', 'zoomSmall', 'zoomDefault', 'zoomLarge', 'zoomLarger', 'zoomLargest'];
+  var zoomSteps = ['zoomSmallest' , 'zoomSmaller' , 'zoomSmall' , 'zoomDefault' , 'zoomLarge' , 'zoomLarger' , 'zoomLargest'];
   var currentZoomState = 3;
   if (extSettings && extSettings.zoomState) {
     currentZoomState = extSettings.zoomState;
@@ -77,7 +75,7 @@ $(document).ready(function() {
   $htmlContent.removeClass();
   $htmlContent.addClass('markdown ' + styles[currentStyleIndex] + " " + zoomSteps[currentZoomState]);
 
-  $("#changeStyleButton").bind('click', function() {
+  $("#changeStyleButton").bind('click' , function() {
     currentStyleIndex = currentStyleIndex + 1;
     if (currentStyleIndex >= styles.length) {
       currentStyleIndex = 0;
@@ -87,7 +85,7 @@ $(document).ready(function() {
     saveExtSettings();
   });
 
-  $("#zoomInButton").bind('click', function() {
+  $("#zoomInButton").bind('click' , function() {
     currentZoomState++;
     if (currentZoomState >= zoomSteps.length) {
       currentZoomState = 6;
@@ -97,7 +95,7 @@ $(document).ready(function() {
     saveExtSettings();
   });
 
-  $("#zoomOutButton").bind('click', function() {
+  $("#zoomOutButton").bind('click' , function() {
     currentZoomState--;
     if (currentZoomState < 0) {
       currentZoomState = 0;
@@ -107,14 +105,14 @@ $(document).ready(function() {
     saveExtSettings();
   });
 
-  $("#zoomResetButton").bind('click', function() {
+  $("#zoomResetButton").bind('click' , function() {
     currentZoomState = 3;
     $htmlContent.removeClass();
     $htmlContent.addClass('markdown ' + styles[currentStyleIndex] + " " + zoomSteps[currentZoomState]);
     saveExtSettings();
   });
 
-  $("#printButton").on("click", function() {
+  $("#printButton").on("click" , function() {
     $(".dropdown-menu").dropdown('toggle');
     window.print();
   });
@@ -125,20 +123,20 @@ $(document).ready(function() {
 
   // Init internationalization
   $.i18n.init({
-    ns: {namespaces: ['ns.viewerAudioVideo']},
-    debug: true,
-    lng: locale,
+    ns: {namespaces: ['ns.viewerAudioVideo']} ,
+    debug: true ,
+    lng: locale ,
     fallbackLng: 'en_US'
-  }, function() {
+  } , function() {
     $('[data-i18n]').i18n();
   });
 
   function saveExtSettings() {
     var settings = {
-      "styleIndex": currentStyleIndex,
-      "zoomState":  currentZoomState
+      "styleIndex": currentStyleIndex ,
+      "zoomState": currentZoomState
     };
-    localStorage.setItem('viewerMDSettings', JSON.stringify(settings));
+    localStorage.setItem('viewerMDSettings' , JSON.stringify(settings));
   }
 
   function loadExtSettings() {
@@ -147,23 +145,23 @@ $(document).ready(function() {
 
 });
 
-function setContent(content, fileDirectory) {
+function setContent(content , fileDirectory) {
   var $htmlContent = $('#main');
   $htmlContent.append(content);
   console.log('SHOW MD CONTENT : ' + content);
 
-  $("base").attr("href", fileDirectory + "//");
+  $("base").attr("href" , fileDirectory + "//");
 
   if (fileDirectory.indexOf("file://") === 0) {
-    fileDirectory = fileDirectory.substring(("file://").length, fileDirectory.length);
+    fileDirectory = fileDirectory.substring(("file://").length , fileDirectory.length);
   }
 
   var hasURLProtocol = function(url) {
     return (
-      url.indexOf("http://") === 0 ||
-      url.indexOf("https://") === 0 ||
-      url.indexOf("file://") === 0 ||
-      url.indexOf("data:") === 0
+            url.indexOf("http://") === 0 ||
+            url.indexOf("https://") === 0 ||
+            url.indexOf("file://") === 0 ||
+            url.indexOf("data:") === 0
     );
   };
 
@@ -172,7 +170,7 @@ function setContent(content, fileDirectory) {
     var currentSrc = $(this).attr("src");
     if (!hasURLProtocol(currentSrc)) {
       var path = (isWeb ? "" : "file://") + fileDirectory + "/" + currentSrc;
-      $(this).attr("src", path);
+      $(this).attr("src" , path);
     }
   });
 
@@ -182,16 +180,16 @@ function setContent(content, fileDirectory) {
 
     if (!hasURLProtocol(currentSrc)) {
       var path = (isWeb ? "" : "file://") + fileDirectory + "/" + currentSrc;
-      $(this).attr("href", path);
+      $(this).attr("href" , path);
     }
 
-    $(this).bind('click', function(e) {
+    $(this).bind('click' , function(e) {
       e.preventDefault();
       if (path) {
         currentSrc = encodeURIComponent(path);
       }
-      var msg = {command: "openLinkExternally", link : currentSrc};
-      window.parent.postMessage(JSON.stringify(msg), "*");
+      var msg = {command: "openLinkExternally" , link: currentSrc};
+      window.parent.postMessage(JSON.stringify(msg) , "*");
     });
   });
 
