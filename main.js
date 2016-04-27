@@ -50,23 +50,23 @@ $(document).ready(function() {
   function handleLinks($element) {
     $element.find("a[href]").each(function() {
       var currentSrc = $(this).attr("href");
-      $(this).bind('click' , function(e) {
+      $(this).bind('click', function(e) {
         e.preventDefault();
-        var msg = {command: "openLinkExternally" , link: currentSrc};
-        window.parent.postMessage(JSON.stringify(msg) , "*");
+        var msg = {command: "openLinkExternally", link : currentSrc};
+        window.parent.postMessage(JSON.stringify(msg), "*");
       });
     });
   }
 
   var $htmlContent = $("#htmlContent");
 
-  var styles = ['' , 'solarized-dark' , 'github' , 'metro-vibes' , 'clearness' , 'clearness-dark'];
+  var styles = ['', 'solarized-dark', 'github', 'metro-vibes', 'clearness', 'clearness-dark'];
   var currentStyleIndex = 0;
   if (extSettings && extSettings.styleIndex) {
     currentStyleIndex = extSettings.styleIndex;
   }
 
-  var zoomSteps = ['zoomSmallest' , 'zoomSmaller' , 'zoomSmall' , 'zoomDefault' , 'zoomLarge' , 'zoomLarger' , 'zoomLargest'];
+  var zoomSteps = ['zoomSmallest', 'zoomSmaller', 'zoomSmall', 'zoomDefault', 'zoomLarge', 'zoomLarger', 'zoomLargest'];
   var currentZoomState = 3;
   if (extSettings && extSettings.zoomState) {
     currentZoomState = extSettings.zoomState;
@@ -75,7 +75,7 @@ $(document).ready(function() {
   $htmlContent.removeClass();
   $htmlContent.addClass('markdown ' + styles[currentStyleIndex] + " " + zoomSteps[currentZoomState]);
 
-  $("#changeStyleButton").bind('click' , function() {
+  $("#changeStyleButton").bind('click', function() {
     currentStyleIndex = currentStyleIndex + 1;
     if (currentStyleIndex >= styles.length) {
       currentStyleIndex = 0;
@@ -85,7 +85,7 @@ $(document).ready(function() {
     saveExtSettings();
   });
 
-  $("#zoomInButton").bind('click' , function() {
+  $("#zoomInButton").bind('click', function() {
     currentZoomState++;
     if (currentZoomState >= zoomSteps.length) {
       currentZoomState = 6;
@@ -95,7 +95,7 @@ $(document).ready(function() {
     saveExtSettings();
   });
 
-  $("#zoomOutButton").bind('click' , function() {
+  $("#zoomOutButton").bind('click', function() {
     currentZoomState--;
     if (currentZoomState < 0) {
       currentZoomState = 0;
@@ -105,14 +105,14 @@ $(document).ready(function() {
     saveExtSettings();
   });
 
-  $("#zoomResetButton").bind('click' , function() {
+  $("#zoomResetButton").bind('click', function() {
     currentZoomState = 3;
     $htmlContent.removeClass();
     $htmlContent.addClass('markdown ' + styles[currentStyleIndex] + " " + zoomSteps[currentZoomState]);
     saveExtSettings();
   });
 
-  $("#printButton").on("click" , function() {
+  $("#printButton").on("click", function() {
     $(".dropdown-menu").dropdown('toggle');
     window.print();
   });
@@ -132,15 +132,12 @@ $(document).ready(function() {
   });
 
   function saveExtSettings() {
-    var settings = {
-      "styleIndex": currentStyleIndex ,
-      "zoomState": currentZoomState
-    };
-    localStorage.setItem('viewerMDSettings' , JSON.stringify(settings));
+    var settings = {};
+    localStorage.setItem('viewerAudioVideoSettings', JSON.stringify(settings));
   }
 
   function loadExtSettings() {
-    extSettings = JSON.parse(localStorage.getItem("viewerMDSettings"));
+    extSettings = JSON.parse(localStorage.getItem("viewerAudioVideoSettings"));
   }
 
 });
