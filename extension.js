@@ -66,7 +66,6 @@ define(function(require, exports, module) {
         "<progress class='plyr__progress--buffer' max='100' value='0'>",
         "<span>0</span>% buffered",
         "</progress>",
-        "<span class='plyr__tooltip'></span>",
         "</span>",
         "<span class='plyr__time'>",
         "<span class='plyr__sr-only'></span>",
@@ -101,7 +100,7 @@ define(function(require, exports, module) {
         html: controlsHTML,
         title: 'TagSpaces',
         tooltips: {
-          controls: true
+          controls: false
         },
         captions: {
           defaultActive: true
@@ -114,6 +113,9 @@ define(function(require, exports, module) {
       $(this).contents().find(".js-plyr").append(controls);
 
       var player = this.contentWindow.plyr.setup('.js-plyr', options)[0];
+
+
+
       player.play();
     }));
   }

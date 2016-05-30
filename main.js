@@ -140,6 +140,16 @@ $(document).ready(function() {
     extSettings = JSON.parse(localStorage.getItem("viewerAudioVideoSettings"));
   }
 
+  document.querySelector('.js-plyr').addEventListener('ended', function(event) {
+    var player = event.target.plyr;
+    handleVideoEnded()
+  });
+
+  var filePath;
+  function handleVideoEnded() {
+    var msg = {command: "endedVideo" , filepath: filePath};
+    window.parent.postMessage(JSON.stringify(msg) , "*");
+  }
 });
 
 function setContent(content , fileDirectory) {
@@ -189,5 +199,6 @@ function setContent(content , fileDirectory) {
       window.parent.postMessage(JSON.stringify(msg) , "*");
     });
   });
+
 
 }
