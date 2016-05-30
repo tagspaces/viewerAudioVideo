@@ -147,7 +147,7 @@ $(document).ready(function() {
 
   var filePath;
   function handleVideoEnded() {
-    var msg = {command: "endedVideo" , filepath: filePath};
+    var msg = {command: "playingVideo" , filepath: filePath};
     window.parent.postMessage(JSON.stringify(msg) , "*");
   }
 });
