@@ -104,7 +104,8 @@ define(function(require, exports, module) {
         },
         captions: {
           defaultActive: true
-        }
+        },
+        hideControls: false
       };
       if (extensionSupportedFileTypesAudio.indexOf(ext) !== -1) {
         controls = $("<audio controls>");
@@ -113,9 +114,6 @@ define(function(require, exports, module) {
       $(this).contents().find(".js-plyr").append(controls);
 
       var player = this.contentWindow.plyr.setup('.js-plyr', options)[0];
-
-
-
       player.play();
     }));
   }
