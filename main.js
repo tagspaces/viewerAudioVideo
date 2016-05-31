@@ -141,13 +141,12 @@ $(document).ready(function() {
   }
 
   document.querySelector('.js-plyr').addEventListener('ended', function(event) {
-    var player = event.target.plyr;
     handleVideoEnded()
   });
 
   var filePath;
   function handleVideoEnded() {
-    var msg = {command: "playingVideo" , filepath: filePath};
+    var msg = {command: "playbackEnded" , filepath: filePath};
     window.parent.postMessage(JSON.stringify(msg) , "*");
   }
 });
