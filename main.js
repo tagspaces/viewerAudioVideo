@@ -1,8 +1,8 @@
 /* Copyright (c) 2013-2016 The TagSpaces Authors.
  * Use of this source code is governed by the MIT license which can be found in the LICENSE.txt file. */
 
-/* globals marked */
-"use strict";
+/* globals marked $ */
+'use strict';
 
 var isCordova;
 var isWin;
@@ -27,6 +27,11 @@ $(document).ready(function() {
 
   $(document).on('drop dragend dragenter dragover' , function(event) {
     event.preventDefault();
+  });
+
+  $(document).on('click' , function(event) {
+    var msg = {command: "hideAllMenus"};
+    window.parent.postMessage(JSON.stringify(msg), "*");
   });
 
   $('#aboutExtensionModal').on('show.bs.modal' , function() {

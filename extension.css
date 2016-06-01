@@ -1,5 +1,13 @@
 @import '../../assets/extensions.css';
 
+.plyr {
+    height: 100%;
+}
+
+.plyr--video .plyr__controls {
+    padding-right: 70px !important;
+}
+
 html, body {
     height: 100%;
     width: 100%;
@@ -9,9 +17,10 @@ html, body {
 
 #main {
     height: 100%;
-    width: 97%;
-    margin: 5px;
-    padding: 5px;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    background-color: black;
 }
 
 #aboutExtensionModal img {
