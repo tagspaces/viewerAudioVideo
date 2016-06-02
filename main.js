@@ -1,7 +1,7 @@
 /* Copyright (c) 2013-2016 The TagSpaces Authors.
  * Use of this source code is governed by the MIT license which can be found in the LICENSE.txt file. */
 
-/* globals marked $ */
+/* globals marked */
 'use strict';
 
 var isCordova;
@@ -30,9 +30,13 @@ $(document).ready(function() {
   });
 
   $(document).on('click' , function(event) {
+    fireHideAllMenusEvent();
+  });
+
+  function fireHideAllMenusEvent() {
     var msg = {command: "hideAllMenus"};
     window.parent.postMessage(JSON.stringify(msg), "*");
-  });
+  }
 
   $('#aboutExtensionModal').on('show.bs.modal' , function() {
     $.ajax({
@@ -57,6 +61,7 @@ $(document).ready(function() {
       var currentSrc = $(this).attr("href");
       $(this).bind('click', function(e) {
         e.preventDefault();
+        fireHideAllMenusEvent();
         var msg = {command: "openLinkExternally", link: currentSrc};
         window.parent.postMessage(JSON.stringify(msg), "*");
       });
@@ -169,10 +174,10 @@ function setContent(content , fileDirectory) {
 
   var hasURLProtocol = function(url) {
     return (
-            url.indexOf("http://") === 0 ||
-            url.indexOf("https://") === 0 ||
-            url.indexOf("file://") === 0 ||
-            url.indexOf("data:") === 0
+      url.indexOf("http://") === 0 ||
+      url.indexOf("https://") === 0 ||
+      url.indexOf("file://") === 0 ||
+      url.indexOf("data:") === 0
     );
   };
 
@@ -190,7 +195,7 @@ function setContent(content , fileDirectory) {
     var path;
 
     if (!hasURLProtocol(currentSrc)) {
-      var path = (isWeb ? "" : "file://") + fileDirectory + "/" + currentSrc;
+      path = (isWeb ? "" : "file://") + fileDirectory + "/" + currentSrc;
       $(this).attr("href" , path);
     }
 
