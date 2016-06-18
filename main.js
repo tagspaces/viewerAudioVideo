@@ -112,7 +112,7 @@ $(document).ready(function() {
   }
 
   document.querySelector('.js-plyr').addEventListener('ended', function(event) {
-    handleVideoEnded()
+    handleVideoEnded();
   });
 
   var filePath;
