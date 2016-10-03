@@ -115,6 +115,21 @@ define(function(require, exports, module) {
 
       var player = this.contentWindow.plyr.setup('.js-plyr', options)[0];
       player.play();
+      var resume;
+      //Listen to audio custom event
+      window.addEventListener('resume', function(e) {
+        if (TSCORE.selectedFiles[0]) {
+          if (resume === true && e.detail === true) {
+            resume = false;
+            player.play();
+          } else {
+            resume = true;
+            player.pause();
+          }
+        } else {
+          TSCORE.showAlertDialog($.i18n.t("ns.common:selectFile"));
+        }
+      });
     }));
   }
 

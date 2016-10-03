@@ -125,7 +125,6 @@ $(document).ready(function() {
 function setContent(content , fileDirectory) {
   var $htmlContent = $('#main');
   $htmlContent.append(content);
-  console.log('SHOW MD CONTENT : ' + content);
 
   $("base").attr("href" , fileDirectory + "//");
 
