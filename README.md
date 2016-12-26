@@ -1,3 +1,5 @@
+# Audio Video Player for TagSpaces
+
 A TagSpaces extension allowing playing of audio and video files.
 
 ## Features
