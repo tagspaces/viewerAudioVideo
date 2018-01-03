@@ -6,7 +6,8 @@
 
 var isCordova;
 var isWin;
-var isWeb;
+var loadContentExternally = true;
+var isWeb = (document.URL.startsWith('http') && !document.URL.startsWith('http://localhost:1212/'));
 
 $(document).ready(function() {
   function getParameterByName(name) {
@@ -93,13 +94,14 @@ $(document).ready(function() {
   }
 
   // Init internationalization
-  $.i18n.init({
+  i18next.init({
     ns: {namespaces: ['ns.viewerAudioVideo']} ,
     debug: true ,
     lng: locale ,
     fallbackLng: 'en_US'
   } , function() {
-    $('[data-i18n]').i18n();
+    jqueryI18next.init(i18next, $);
+    $('[data-i18n]').localize();
   });
 
   function saveExtSettings() {
