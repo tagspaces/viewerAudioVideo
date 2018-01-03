@@ -6,7 +6,7 @@
 
 var isCordova;
 var isWin;
-var loadContentExternally = true;
+var loadContentExternally = false;
 var isWeb = (document.URL.startsWith('http') && !document.URL.startsWith('http://localhost:1212/'));
 
 $(document).ready(function() {
