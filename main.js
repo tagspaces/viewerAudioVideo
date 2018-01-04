@@ -1,7 +1,7 @@
 /* Copyright (c) 2013-present The TagSpaces Authors.
  * Use of this source code is governed by the MIT license which can be found in the LICENSE.txt file. */
 
-/* globals plyr */
+/* globals marked, plyr */
 'use strict';
 
 var isCordova;
@@ -18,81 +18,13 @@ $(document).ready(function() {
   }
 
   var locale = getParameterByName("locale");
-  var filePath = getParameterByName("file") || '../../example.pdf';
+  var filePath = getParameterByName("file");
 
   var extSettings;
   loadExtSettings();
 
   isCordova = parent.isCordova;
   isWin = parent.isWin;
-  isWeb = parent.isWeb;
-  //
-  $(document).on('drop dragend dragenter dragover' , function(event) {
-    event.preventDefault();
-  });
-
-  var $htmlContent = $("#htmlContent");
-
-  var styles = ['', 'solarized-dark', 'github', 'metro-vibes', 'clearness', 'clearness-dark'];
-  var currentStyleIndex = 0;
-  if (extSettings && extSettings.styleIndex) {
-    currentStyleIndex = extSettings.styleIndex;
-  }
-
-  var zoomSteps = ['zoomSmallest', 'zoomSmaller', 'zoomSmall', 'zoomDefault', 'zoomLarge', 'zoomLarger', 'zoomLargest'];
-  var currentZoomState = 3;
-  if (extSettings && extSettings.zoomState) {
-    currentZoomState = extSettings.zoomState;
-  }
-
-  $htmlContent.removeClass();
-  $htmlContent.addClass('markdown ' + styles[currentStyleIndex] + " " + zoomSteps[currentZoomState]);
-
-  $("#changeStyleButton").bind('click', function() {
-    currentStyleIndex = currentStyleIndex + 1;
-    if (currentStyleIndex >= styles.length) {
-      currentStyleIndex = 0;
-    }
-    $htmlContent.removeClass();
-    $htmlContent.addClass('markdown ' + styles[currentStyleIndex] + " " + zoomSteps[currentZoomState]);
-    saveExtSettings();
-  });
-
-  $("#zoomInButton").bind('click', function() {
-    currentZoomState++;
-    if (currentZoomState >= zoomSteps.length) {
-      currentZoomState = 6;
-    }
-    $htmlContent.removeClass();
-    $htmlContent.addClass('markdown ' + styles[currentStyleIndex] + " " + zoomSteps[currentZoomState]);
-    saveExtSettings();
-  });
-
-  $("#zoomOutButton").bind('click', function() {
-    currentZoomState--;
-    if (currentZoomState < 0) {
-      currentZoomState = 0;
-    }
-    $htmlContent.removeClass();
-    $htmlContent.addClass('markdown ' + styles[currentStyleIndex] + " " + zoomSteps[currentZoomState]);
-    saveExtSettings();
-  });
-
-  $("#zoomResetButton").bind('click', function() {
-    currentZoomState = 3;
-    $htmlContent.removeClass();
-    $htmlContent.addClass('markdown ' + styles[currentStyleIndex] + " " + zoomSteps[currentZoomState]);
-    saveExtSettings();
-  });
-
-  $("#printButton").on("click", function() {
-    $(".dropdown-menu").dropdown('toggle');
-    window.print();
-  });
-
-  if (isCordova) {
-    $("#printButton").hide();
-  }
 
   // var extensionSupportedFileTypesVideo = ["mp4", "webm", "ogv", "m4v"];
   var extensionSupportedFileTypesAudio = ["mp3", "ogg"];
