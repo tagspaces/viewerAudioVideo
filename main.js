@@ -6,7 +6,6 @@
 
 var isCordova;
 var isWin;
-var loadContentExternally = false;
 var isWeb = (document.URL.startsWith('http') && !document.URL.startsWith('http://localhost:1212/'));
 
 $(document).ready(function() {
@@ -152,7 +151,6 @@ $(document).ready(function() {
   });
 
   function handleVideoEnded() {
-    var msg = {command: "playbackEnded" , filepath: filePath};
-    window.parent.postMessage(JSON.stringify(msg) , "*");
+    sendMessageToHost({command: 'playbackEnded', filepath: filePath});
   }
 });
