@@ -10,14 +10,15 @@ var isWeb = (document.URL.startsWith('http') && !document.URL.startsWith('http:/
 
 $(document).ready(function() {
   function getParameterByName(name) {
-    name = name.replace(/[\[]/ , "\\\[").replace(/[\]]/ , "\\\]");
-    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)") ,
+    name = name.replace(/[\[]/ , '\\\[').replace(/[\]]/ , '\\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)') ,
             results = regex.exec(location.search);
-    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g , " "));
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g , ' '));
   }
 
-  var locale = getParameterByName("locale");
-  var filePath = getParameterByName("file");
+  var locale = getParameterByName('locale');
+  var filePath = getParameterByName('file');
+  initI18N(locale, 'ns.viewerAudioVideo.json');
 
   var extSettings;
   loadExtSettings();
@@ -100,10 +101,10 @@ $(document).ready(function() {
     hideControls: false
   };
   if (extensionSupportedFileTypesAudio.indexOf(ext) !== -1) {
-    controls = $("<audio controls>");
+    controls = $('<audio controls>');
   }
-  controls.append("<source>").attr("src", filePath);
-  $(this).contents().find(".js-plyr").append(controls);
+  controls.append('<source>').attr('src', filePath);
+  $(this).contents().find('.js-plyr').append(controls);
 
   var player = plyr.setup('.js-plyr', options)[0];
   player.play();
@@ -120,22 +121,11 @@ $(document).ready(function() {
   });
 
   function loadSprite(body) {
-    var jqxhr = $.get("./libs/plyr/dist/plyr.svg", function() {
-      var $el = $("<div/>").css("display", "none").html(jqxhr.responseText);
+    var jqxhr = $.get('./libs/plyr/dist/plyr.svg', function() {
+      var $el = $('<div/>').css('display', 'none').html(jqxhr.responseText);
       body.prepend($el);
     });
   }
-
-  // Init internationalization
-  i18next.init({
-    ns: {namespaces: ['ns.viewerAudioVideo']} ,
-    debug: true ,
-    lng: locale ,
-    fallbackLng: 'en_US'
-  } , function() {
-    jqueryI18next.init(i18next, $);
-    $('[data-i18n]').localize();
-  });
 
   function saveExtSettings() {
     var settings = {};
@@ -143,7 +133,7 @@ $(document).ready(function() {
   }
 
   function loadExtSettings() {
-    extSettings = JSON.parse(localStorage.getItem("viewerAudioVideoSettings"));
+    extSettings = JSON.parse(localStorage.getItem('viewerAudioVideoSettings'));
   }
 
   document.querySelector('.js-plyr').addEventListener('ended', function(event) {
