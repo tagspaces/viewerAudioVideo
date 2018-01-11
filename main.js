@@ -4,10 +4,6 @@
 /* globals marked, plyr */
 'use strict';
 
-var isCordova;
-var isWin;
-var isWeb = (document.URL.startsWith('http') && !document.URL.startsWith('http://localhost:1212/'));
-
 $(document).ready(function() {
   var locale = getParameterByName('locale');
   var filePath = getParameterByName('file');
@@ -15,9 +11,6 @@ $(document).ready(function() {
 
   var extSettings;
   loadExtSettings();
-
-  isCordova = parent.isCordova;
-  isWin = parent.isWin;
 
   // var extensionSupportedFileTypesVideo = ["mp4", "webm", "ogv", "m4v"];
   var extensionSupportedFileTypesAudio = ["mp3", "ogg"];
