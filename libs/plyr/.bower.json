@@ -9,13 +9,13 @@
     "HTml5 Video"
   ],
   "authors": [
-    "Sam Potts <me@sampotts.me>"
+    "Sam Potts <sam@potts.es>"
   ],
   "dependencies": {},
   "main": [
     "dist/plyr.css",
     "dist/plyr.js",
-    "dist/sprite.svg",
+    "dist/plyr.svg",
     "src/less/plyr.less",
     "src/scss/plyr.scss",
     "src/js/plyr.js"
@@ -27,18 +27,17 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/selz/plyr.git"
+    "url": "git://github.com/sampotts/plyr.git"
   },
   "license": "MIT",
-  "version": "1.6.13",
-  "_release": "1.6.13",
+  "version": "2.0.18",
+  "_release": "2.0.18",
   "_resolution": {
     "type": "version",
-    "tag": "v1.6.13",
-    "commit": "e9727716f28f606db5e6dfc1d658498017277628"
+    "tag": "v2.0.18",
+    "commit": "69f941b9cab91c53df7335fbaf6c0d521cdcb5b2"
   },
   "_source": "https://github.com/selz/plyr.git",
-  "_target": "^1.6.13",
-  "_originalSource": "plyr",
-  "_direct": true
+  "_target": "~2.0.18",
+  "_originalSource": "plyr"
 }
