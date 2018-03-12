@@ -109,9 +109,10 @@ $(document).ready(() => {
 
   const player = plyr.setup('.js-plyr', options)[0];
   player.play();
-  let resume;
+  let resume, loopOne = false;
 
   window.addEventListener('resume', (e) => {
+    console.log('Recive resume evenet', e);
     if (resume === true && e.detail === true) {
       resume = false;
       player.play();
@@ -140,25 +141,30 @@ $(document).ready(() => {
   }
 
   document.querySelector('.js-plyr').addEventListener('ended', () => {
-    sendMessageToHost({ command: 'playbackEnded', filepath: filePath });
+    console.log(autoplay);
     if (autoplay) {
       player.restart();
       player.play();
     } else {
       player.stop();
+      sendMessageToHost({ command: 'playbackEnded', filepath: filePath });
+    }
+
+    if (loopOne) {
+      // player.restart();
+      player.play();
+      loopOne = false;
+      autoplay = false;
     }
   });
 
   $('#disableAutoPlay').on('click', () => {
-    sendMessageToHost({ command: 'disableAutoPlay' });
     $('#enableAutoPlay').show();
     $('#disableAutoPlay').hide();
     autoplay = false;
-    // player.restart();
   });
 
   $('#enableAutoPlay').on('click', () => {
-    sendMessageToHost({ command: 'enableAutoPlay' });
     $('#enableAutoPlay').hide();
     $('#disableAutoPlay').show();
     autoplay = true;
@@ -167,16 +173,14 @@ $(document).ready(() => {
   });
 
   $('#loopAll').on('click', () => {
-    sendMessageToHost({ command: 'loopAll' });
     player.play();
   });
 
   $('#loopOne').on('click', () => {
-    sendMessageToHost({ command: 'loopOne' });
+    loopOne = true;
   });
 
   $('#noLoop').on('click', () => {
-    sendMessageToHost({ command: 'noLoop' });
     autoplay = false;
     player.stop();
   });
