@@ -13,6 +13,9 @@ $(document).ready(() => {
 
   loadExtSettings();
 
+  // Menu: hide readability items
+  $('#enableAutoPlay').hide();
+
   // var extensionSupportedFileTypesVideo = ['mp4', 'webm', 'ogv', 'm4v'];
   const extensionSupportedFileTypesAudio = ['mp3', 'ogg'];
 
@@ -83,7 +86,7 @@ $(document).ready(() => {
     <span class='plyr__sr-only'>Toggle Fullscreen</span>
   </button-->
 </div>`;
-
+  let autoplay = true;
   const options = {
     html: controlsHTML,
     title: 'TagSpaces',
@@ -93,7 +96,9 @@ $(document).ready(() => {
     captions: {
       defaultActive: true
     },
-    hideControls: false
+    hideControls: false,
+    autoplay: autoplay,
+    keyboardShortcuts: { focused: true, global: false }
   };
   if (extensionSupportedFileTypesAudio.indexOf(ext) !== -1) {
     controls = $('<audio controls>');
@@ -136,5 +141,43 @@ $(document).ready(() => {
 
   document.querySelector('.js-plyr').addEventListener('ended', () => {
     sendMessageToHost({ command: 'playbackEnded', filepath: filePath });
+    if (autoplay) {
+      player.restart();
+      player.play();
+    } else {
+      player.stop();
+    }
+  });
+
+  $('#disableAutoPlay').on('click', () => {
+    sendMessageToHost({ command: 'disableAutoPlay' });
+    $('#enableAutoPlay').show();
+    $('#disableAutoPlay').hide();
+    autoplay = false;
+    // player.restart();
+  });
+
+  $('#enableAutoPlay').on('click', () => {
+    sendMessageToHost({ command: 'enableAutoPlay' });
+    $('#enableAutoPlay').hide();
+    $('#disableAutoPlay').show();
+    autoplay = true;
+    player.restart();
+    player.play();
+  });
+
+  $('#loopAll').on('click', () => {
+    sendMessageToHost({ command: 'loopAll' });
+    player.play();
+  });
+
+  $('#loopOne').on('click', () => {
+    sendMessageToHost({ command: 'loopOne' });
+  });
+
+  $('#noLoop').on('click', () => {
+    sendMessageToHost({ command: 'noLoop' });
+    autoplay = false;
+    player.stop();
   });
 });
