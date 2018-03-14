@@ -15,35 +15,20 @@ $(document).ready(() => {
   // var extensionSupportedFileTypesVideo = ['mp4', 'webm', 'ogv', 'm4v'];
   const extensionSupportedFileTypesAudio = ['mp3', 'ogg'];
 
-  let resume, enableAutoPlay = true, disableAutoPlay = false, currentLoopOne = false, currentLoopAll = false, currentNoLoop = false;
-
+  let resume, enableAutoPlay = true, loop = '';
   if (extSettings && extSettings.enableAutoPlay) {
     enableAutoPlay = extSettings.enableAutoPlay;
   }
-  if (extSettings && extSettings.disableAutoPlay) {
-    disableAutoPlay = extSettings.disableAutoPlay;
-  }
-  if (extSettings && extSettings.loopOne) {
-    currentLoopOne = extSettings.loopOne;
-  }
-  if (extSettings && extSettings.loopAll) {
-    currentLoopAll = extSettings.loopAll;
-  }
-  if (extSettings && extSettings.noLoop) {
-    currentLoopAll = extSettings.noLoop;
+  if (extSettings && extSettings.loop) {
+    loop = extSettings.loop;
   }
 
   function saveExtSettings() {
     const settings = {
       'enableAutoPlay': enableAutoPlay,
-      'disableAutoPlay': disableAutoPlay,
-      'loopOne': currentLoopOne,
-      'loopAll': currentLoopAll,
-      'noLoop': currentNoLoop
+      'loop': loop
     };
     localStorage.setItem('viewerAudioVideoSettings', JSON.stringify(settings));
-    console.log('saveExtSettings');
-    console.log(settings);
   }
 
   function loadExtSettings() {
@@ -165,26 +150,29 @@ $(document).ready(() => {
     if (enableAutoPlay) {
       $('.fa-play-circle-o').addClass('indication');
       player.play();
-    }
-
-    if (disableAutoPlay) {
+    } else {
       $('.fa-stop-circle-o').addClass('indication');
       player.stop();
     }
 
-    if (currentLoopOne) {
-      $('.fa-play-circle').addClass('indication');
-      player.play();
-    }
-
-    if (currentLoopAll) {
-      $('.fa-repeat').addClass('indication');
-      player.play();
-    }
-
-    if (currentNoLoop) {
-      $('.fa-play').addClass('indication');
-      player.stop();
+    switch (loop) {
+      case 'loopOne':
+        $('.fa-play-circle')
+          .addClass('indication');
+        player.play();
+        break;
+      case 'loopAll':
+        $('.fa-repeat')
+          .addClass('indication');
+        player.play();
+        break;
+      case 'noLoop':
+        $('.fa-play')
+          .addClass('indication');
+        player.stop();
+        break;
+      default:
+        loop = '';
     }
   });
 
@@ -192,18 +180,16 @@ $(document).ready(() => {
     if (enableAutoPlay) {
       player.restart();
       player.play();
-    }
-
-    if (disableAutoPlay) {
+    } else  {
       player.stop();
       sendMessageToHost({ command: 'playbackEnded', filepath: filePath });
     }
 
-    if (currentLoopOne) {
+    if (loop = 'loopOne') {
       player.play();
     }
 
-    if (currentNoLoop) {
+    if (loop = 'noLoop') {
       player.stop();
     }
   });
@@ -214,14 +200,10 @@ $(document).ready(() => {
     $('.fa-play-circle').removeClass('indication');
     $('.fa-play').removeClass('indication');
     $('.fa-repeat').removeClass('indication');
-    // $('#disableAutoPlay').hide();
-    // $('#enableAutoPlay').show();
+    $('#disableAutoPlay').hide();
+    $('#enableAutoPlay').show();
     $('.fa-stop-circle-o').addClass('indication');
-    disableAutoPlay = true;
     enableAutoPlay = false;
-    currentLoopOne = false;
-    currentNoLoop = false;
-    currentLoopAll = false;
     saveExtSettings();
   });
 
@@ -231,14 +213,10 @@ $(document).ready(() => {
     $('.fa-play-circle').removeClass('indication');
     $('.fa-play').removeClass('indication');
     $('.fa-repeat').removeClass('indication');
-    // $('#enableAutoPlay').hide();
-    // $('#disableAutoPlay').show();
+    $('#enableAutoPlay').hide();
+    $('#disableAutoPlay').show();
     $('.fa-play-circle-o').addClass('indication');
     enableAutoPlay = true;
-    disableAutoPlay = false;
-    currentLoopAll = false;
-    currentLoopOne = false;
-    currentNoLoop = false;
     player.restart();
     player.play();
     saveExtSettings();
@@ -252,11 +230,8 @@ $(document).ready(() => {
     $('.fa-play').removeClass('indication');
     $('.fa-repeat').addClass('indication');
     player.play();
-    currentLoopAll = true;
-    currentLoopOne = false;
+    loop = 'loopAll';
     enableAutoPlay = false;
-    disableAutoPlay = false;
-    currentNoLoop = false;
     saveExtSettings();
   });
 
@@ -267,11 +242,7 @@ $(document).ready(() => {
     $('.fa-repeat').removeClass('indication');
     $('.fa-play').removeClass('indication');
     $('.fa-play-circle').addClass('indication');
-    currentLoopOne = true;
-    currentLoopAll = false;
-    enableAutoPlay = false;
-    disableAutoPlay = false;
-    currentNoLoop = false;
+    loop = 'loopOne';
     saveExtSettings();
   });
 
@@ -282,11 +253,7 @@ $(document).ready(() => {
     $('.fa-repeat .fa-lg').removeClass('indication');
     $('.fa-play-circle').removeClass('indication');
     $('.fa-play').addClass('indication');
-    enableAutoPlay = false;
-    disableAutoPlay = false;
-    currentLoopOne = false;
-    currentLoopAll = false;
-    currentNoLoop = true;
+    loop = 'noLoop';
     player.stop();
     saveExtSettings();
   });
