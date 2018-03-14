@@ -15,7 +15,7 @@ $(document).ready(() => {
   // var extensionSupportedFileTypesVideo = ['mp4', 'webm', 'ogv', 'm4v'];
   const extensionSupportedFileTypesAudio = ['mp3', 'ogg'];
 
-  let resume, enableAutoPlay = false, disableAutoPlay = false, currentLoopOne = false, currentLoopAll = false, currentNoLoop = false;
+  let resume, enableAutoPlay = true, disableAutoPlay = false, currentLoopOne = false, currentLoopAll = false, currentNoLoop = false;
 
   if (extSettings && extSettings.enableAutoPlay) {
     enableAutoPlay = extSettings.enableAutoPlay;
@@ -162,7 +162,7 @@ $(document).ready(() => {
   }
 
   document.querySelector('.js-plyr').addEventListener('loadstart', () => {
-    if (disableAutoPlay) {
+    if (enableAutoPlay) {
       $('.fa-play-circle-o').addClass('indication');
       player.play();
     }
@@ -217,10 +217,11 @@ $(document).ready(() => {
     // $('#disableAutoPlay').hide();
     // $('#enableAutoPlay').show();
     $('.fa-stop-circle-o').addClass('indication');
-    enableAutoPlay = false;
     disableAutoPlay = true;
+    enableAutoPlay = false;
     currentLoopOne = false;
     currentNoLoop = false;
+    currentLoopAll = false;
     saveExtSettings();
   });
 
