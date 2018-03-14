@@ -15,10 +15,13 @@ $(document).ready(() => {
   // var extensionSupportedFileTypesVideo = ['mp4', 'webm', 'ogv', 'm4v'];
   const extensionSupportedFileTypesAudio = ['mp3', 'ogg'];
 
-  let resume, currentAutoPlay = true, currentLoopOne = false, currentLoopAll = false, currentNoLoop = false;
+  let resume, enableAutoPlay = false, disableAutoPlay = false, currentLoopOne = false, currentLoopAll = false, currentNoLoop = false;
 
-  if (extSettings && extSettings.autoPlay) {
-    currentAutoPlay = extSettings.autoPlay;
+  if (extSettings && extSettings.enableAutoPlay) {
+    enableAutoPlay = extSettings.enableAutoPlay;
+  }
+  if (extSettings && extSettings.disableAutoPlay) {
+    disableAutoPlay = extSettings.disableAutoPlay;
   }
   if (extSettings && extSettings.loopOne) {
     currentLoopOne = extSettings.loopOne;
@@ -32,7 +35,8 @@ $(document).ready(() => {
 
   function saveExtSettings() {
     const settings = {
-      'autoPlay': currentAutoPlay,
+      'enableAutoPlay': enableAutoPlay,
+      'disableAutoPlay': disableAutoPlay,
       'loopOne': currentLoopOne,
       'loopAll': currentLoopAll,
       'noLoop': currentNoLoop
@@ -158,10 +162,12 @@ $(document).ready(() => {
   }
 
   document.querySelector('.js-plyr').addEventListener('loadstart', () => {
-    if (currentAutoPlay) {
+    if (disableAutoPlay) {
       $('.fa-play-circle-o').addClass('indication');
       player.play();
-    } else {
+    }
+
+    if (disableAutoPlay) {
       $('.fa-stop-circle-o').addClass('indication');
       player.stop();
     }
@@ -183,10 +189,12 @@ $(document).ready(() => {
   });
 
   document.querySelector('.js-plyr').addEventListener('ended', () => {
-    if (currentAutoPlay) {
+    if (enableAutoPlay) {
       player.restart();
       player.play();
-    } else {
+    }
+
+    if (disableAutoPlay) {
       player.stop();
       sendMessageToHost({ command: 'playbackEnded', filepath: filePath });
     }
@@ -209,8 +217,8 @@ $(document).ready(() => {
     // $('#disableAutoPlay').hide();
     // $('#enableAutoPlay').show();
     $('.fa-stop-circle-o').addClass('indication');
-    currentAutoPlay = false;
-    currentLoopAll = false;
+    enableAutoPlay = false;
+    disableAutoPlay = true;
     currentLoopOne = false;
     currentNoLoop = false;
     saveExtSettings();
@@ -225,7 +233,8 @@ $(document).ready(() => {
     // $('#enableAutoPlay').hide();
     // $('#disableAutoPlay').show();
     $('.fa-play-circle-o').addClass('indication');
-    currentAutoPlay = true;
+    enableAutoPlay = true;
+    disableAutoPlay = false;
     currentLoopAll = false;
     currentLoopOne = false;
     currentNoLoop = false;
@@ -244,7 +253,8 @@ $(document).ready(() => {
     player.play();
     currentLoopAll = true;
     currentLoopOne = false;
-    currentAutoPlay = false;
+    enableAutoPlay = false;
+    disableAutoPlay = false;
     currentNoLoop = false;
     saveExtSettings();
   });
@@ -258,7 +268,8 @@ $(document).ready(() => {
     $('.fa-play-circle').addClass('indication');
     currentLoopOne = true;
     currentLoopAll = false;
-    currentAutoPlay = false;
+    enableAutoPlay = false;
+    disableAutoPlay = false;
     currentNoLoop = false;
     saveExtSettings();
   });
@@ -270,7 +281,8 @@ $(document).ready(() => {
     $('.fa-repeat .fa-lg').removeClass('indication');
     $('.fa-play-circle').removeClass('indication');
     $('.fa-play').addClass('indication');
-    currentAutoPlay = false;
+    enableAutoPlay = false;
+    disableAutoPlay = false;
     currentLoopOne = false;
     currentLoopAll = false;
     currentNoLoop = true;
