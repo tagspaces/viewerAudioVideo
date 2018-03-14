@@ -97,9 +97,6 @@ $(document).ready(() => {
   if (extSettings && extSettings.loopAll) {
     currentLoopAll = extSettings.loopAll;
   }
-  if (extSettings && extSettings.loopAll) {
-    currentLoopAll = extSettings.loopAll;
-  }
 
   const options = {
     html: controlsHTML,
