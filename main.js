@@ -4,21 +4,47 @@
 /* globals plyr, initI18N, getParameterByName, $, sendMessageToHost */
 'use strict';
 
-let extSettings;
-
 $(document).ready(() => {
   const locale = getParameterByName('locale');
   const filePath = getParameterByName('file');
   initI18N(locale, 'ns.viewerAudioVideo.json');
 
+  let extSettings;
   loadExtSettings();
-
-  // Menu: hide readability items
-  // $('#enableAutoPlay').hide();
-  $('.fa-stop-circle-o').addClass('indication');
 
   // var extensionSupportedFileTypesVideo = ['mp4', 'webm', 'ogv', 'm4v'];
   const extensionSupportedFileTypesAudio = ['mp3', 'ogg'];
+
+  let resume, currentAutoPlay = true, currentLoopOne = false, currentLoopAll = false, currentNoLoop = false;
+
+  if (extSettings && extSettings.autoPlay) {
+    currentAutoPlay = extSettings.autoPlay;
+  }
+  if (extSettings && extSettings.loopOne) {
+    currentLoopOne = extSettings.loopOne;
+  }
+  if (extSettings && extSettings.loopAll) {
+    currentLoopAll = extSettings.loopAll;
+  }
+  if (extSettings && extSettings.noLoop) {
+    currentLoopAll = extSettings.noLoop;
+  }
+
+  function saveExtSettings() {
+    const settings = {
+      'autoPlay': currentAutoPlay,
+      'loopOne': currentLoopOne,
+      'loopAll': currentLoopAll,
+      'noLoop': currentNoLoop
+    };
+    localStorage.setItem('viewerAudioVideoSettings', JSON.stringify(settings));
+    console.log('saveExtSettings');
+    console.log(settings);
+  }
+
+  function loadExtSettings() {
+    extSettings = JSON.parse(localStorage.getItem('viewerAudioVideoSettings'));
+  }
 
   loadSprite(
     $(document).find('body')
@@ -28,6 +54,7 @@ $(document).ready(() => {
     .pop()
     .toLowerCase();
   let controls = $('<video controls>');
+
   const controlsHTML = `<div class='plyr__controls'>
   <button type='button' data-plyr='restart'>
       <svg><use xlink:href='#plyr-restart'></use></svg>
@@ -87,16 +114,6 @@ $(document).ready(() => {
     <span class='plyr__sr-only'>Toggle Fullscreen</span>
   </button-->
 </div>`;
-  let resume, currentAutoPlay = true, currentLoopOne = false, currentLoopAll = false;
-  if (extSettings && extSettings.autoPlay) {
-    currentAutoPlay = extSettings.autoPlay;
-  }
-  if (extSettings && extSettings.loopOne) {
-    currentLoopOne = extSettings.loopOne;
-  }
-  if (extSettings && extSettings.loopAll) {
-    currentLoopAll = extSettings.loopAll;
-  }
 
   const options = {
     html: controlsHTML,
@@ -108,7 +125,6 @@ $(document).ready(() => {
       defaultActive: true
     },
     hideControls: false,
-    autoplay: currentAutoPlay,
     keyboardShortcuts: { focused: true, global: false }
   };
   if (extensionSupportedFileTypesAudio.indexOf(ext) !== -1) {
@@ -119,10 +135,10 @@ $(document).ready(() => {
   $(document).find('.js-plyr').append(controls);
 
   const player = plyr.setup('.js-plyr', options)[0];
-  player.play();
+  // player.play();
 
   window.addEventListener('resume', (e) => {
-    console.log('Recive resume evenet', e);
+    // console.log('Receive resume event', e);
     if (resume === true && e.detail === true) {
       resume = false;
       player.play();
@@ -141,18 +157,30 @@ $(document).ready(() => {
     });
   }
 
-  function saveExtSettings() {
-    const settings = {
-      'autoPlay': currentAutoPlay,
-      'loopOne': currentLoopOne,
-      'loopAll': currentLoopAll,
-    };
-    localStorage.setItem('viewerAudioVideoSettings', JSON.stringify(settings));
-  }
+  document.querySelector('.js-plyr').addEventListener('loadstart', () => {
+    if (currentAutoPlay) {
+      $('.fa-play-circle-o').addClass('indication');
+      player.play();
+    } else {
+      $('.fa-stop-circle-o').addClass('indication');
+      player.stop();
+    }
 
-  function loadExtSettings() {
-    extSettings = JSON.parse(localStorage.getItem('viewerAudioVideoSettings'));
-  }
+    if (currentLoopOne) {
+      $('.fa-play-circle').addClass('indication');
+      player.play();
+    }
+
+    if (currentLoopAll) {
+      $('.fa-repeat').addClass('indication');
+      player.play();
+    }
+
+    if (currentNoLoop) {
+      $('.fa-play').addClass('indication');
+      player.stop();
+    }
+  });
 
   document.querySelector('.js-plyr').addEventListener('ended', () => {
     if (currentAutoPlay) {
@@ -165,13 +193,15 @@ $(document).ready(() => {
 
     if (currentLoopOne) {
       player.play();
-      currentLoopOne = false;
-      currentAutoPlay = false;
-      saveExtSettings();
+    }
+
+    if (currentNoLoop) {
+      player.stop();
     }
   });
 
-  $('#disableAutoPlay').on('click', () => {
+  $('#disableAutoPlay').on('click', (e) => {
+    e.stopPropagation();
     $('.fa-play-circle-o').removeClass('indication');
     $('.fa-play-circle').removeClass('indication');
     $('.fa-play').removeClass('indication');
@@ -180,9 +210,14 @@ $(document).ready(() => {
     // $('#enableAutoPlay').show();
     $('.fa-stop-circle-o').addClass('indication');
     currentAutoPlay = false;
+    currentLoopAll = false;
+    currentLoopOne = false;
+    currentNoLoop = false;
+    saveExtSettings();
   });
 
-  $('#enableAutoPlay').on('click', () => {
+  $('#enableAutoPlay').on('click', (e) => {
+    e.stopPropagation();
     $('.fa-stop-circle-o').removeClass('indication');
     $('.fa-play-circle').removeClass('indication');
     $('.fa-play').removeClass('indication');
@@ -191,12 +226,16 @@ $(document).ready(() => {
     // $('#disableAutoPlay').show();
     $('.fa-play-circle-o').addClass('indication');
     currentAutoPlay = true;
+    currentLoopAll = false;
+    currentLoopOne = false;
+    currentNoLoop = false;
     player.restart();
     player.play();
     saveExtSettings();
   });
 
-  $('#loopAll').on('click', () => {
+  $('#loopAll').on('click', (e) => {
+    e.stopPropagation();
     $('.fa-play-circle-o').removeClass('indication');
     $('.fa-stop-circle-o').removeClass('indication');
     $('.fa-play-circle').removeClass('indication');
@@ -204,26 +243,37 @@ $(document).ready(() => {
     $('.fa-repeat').addClass('indication');
     player.play();
     currentLoopAll = true;
+    currentLoopOne = false;
+    currentAutoPlay = false;
+    currentNoLoop = false;
     saveExtSettings();
   });
 
-  $('#loopOne').on('click', () => {
+  $('#loopOne').on('click', (e) => {
+    e.stopPropagation();
     $('.fa-play-circle-o').removeClass('indication');
     $('.fa-stop-circle-o').removeClass('indication');
     $('.fa-repeat').removeClass('indication');
     $('.fa-play').removeClass('indication');
     $('.fa-play-circle').addClass('indication');
     currentLoopOne = true;
+    currentLoopAll = false;
+    currentAutoPlay = false;
+    currentNoLoop = false;
     saveExtSettings();
   });
 
-  $('#noLoop').on('click', () => {
+  $('#noLoop').on('click', (e) => {
+    e.stopPropagation();
     $('.fa-play-circle-o').removeClass('indication');
     $('.fa-stop-circle-o').removeClass('indication');
     $('.fa-repeat .fa-lg').removeClass('indication');
     $('.fa-play-circle').removeClass('indication');
     $('.fa-play').addClass('indication');
     currentAutoPlay = false;
+    currentLoopOne = false;
+    currentLoopAll = false;
+    currentNoLoop = true;
     player.stop();
     saveExtSettings();
   });
