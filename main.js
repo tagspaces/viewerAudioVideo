@@ -14,7 +14,8 @@ $(document).ready(() => {
   loadExtSettings();
 
   // Menu: hide readability items
-  $('#enableAutoPlay').hide();
+  // $('#enableAutoPlay').hide();
+  $('.fa-stop-circle-o').addClass('indication');
 
   // var extensionSupportedFileTypesVideo = ['mp4', 'webm', 'ogv', 'm4v'];
   const extensionSupportedFileTypesAudio = ['mp3', 'ogg'];
@@ -86,7 +87,20 @@ $(document).ready(() => {
     <span class='plyr__sr-only'>Toggle Fullscreen</span>
   </button-->
 </div>`;
-  let autoplay = true;
+  let resume, currentAutoPlay = true, currentLoopOne = false, currentLoopAll = false;
+  if (extSettings && extSettings.autoPlay) {
+    currentAutoPlay = extSettings.autoPlay;
+  }
+  if (extSettings && extSettings.loopOne) {
+    currentLoopOne = extSettings.loopOne;
+  }
+  if (extSettings && extSettings.loopAll) {
+    currentLoopAll = extSettings.loopAll;
+  }
+  if (extSettings && extSettings.loopAll) {
+    currentLoopAll = extSettings.loopAll;
+  }
+
   const options = {
     html: controlsHTML,
     title: 'TagSpaces',
@@ -97,7 +111,7 @@ $(document).ready(() => {
       defaultActive: true
     },
     hideControls: false,
-    autoplay: autoplay,
+    autoplay: currentAutoPlay,
     keyboardShortcuts: { focused: true, global: false }
   };
   if (extensionSupportedFileTypesAudio.indexOf(ext) !== -1) {
@@ -109,7 +123,6 @@ $(document).ready(() => {
 
   const player = plyr.setup('.js-plyr', options)[0];
   player.play();
-  let resume, loopOne = false;
 
   window.addEventListener('resume', (e) => {
     console.log('Recive resume evenet', e);
@@ -132,7 +145,11 @@ $(document).ready(() => {
   }
 
   function saveExtSettings() {
-    const settings = {};
+    const settings = {
+      'autoPlay': currentAutoPlay,
+      'loopOne': currentLoopOne,
+      'loopAll': currentLoopAll,
+    };
     localStorage.setItem('viewerAudioVideoSettings', JSON.stringify(settings));
   }
 
@@ -141,8 +158,7 @@ $(document).ready(() => {
   }
 
   document.querySelector('.js-plyr').addEventListener('ended', () => {
-    console.log(autoplay);
-    if (autoplay) {
+    if (currentAutoPlay) {
       player.restart();
       player.play();
     } else {
@@ -150,38 +166,68 @@ $(document).ready(() => {
       sendMessageToHost({ command: 'playbackEnded', filepath: filePath });
     }
 
-    if (loopOne) {
-      // player.restart();
+    if (currentLoopOne) {
       player.play();
-      loopOne = false;
-      autoplay = false;
+      currentLoopOne = false;
+      currentAutoPlay = false;
+      saveExtSettings();
     }
   });
 
   $('#disableAutoPlay').on('click', () => {
-    $('#enableAutoPlay').show();
-    $('#disableAutoPlay').hide();
-    autoplay = false;
+    $('.fa-play-circle-o').removeClass('indication');
+    $('.fa-play-circle').removeClass('indication');
+    $('.fa-play').removeClass('indication');
+    $('.fa-repeat').removeClass('indication');
+    // $('#disableAutoPlay').hide();
+    // $('#enableAutoPlay').show();
+    $('.fa-stop-circle-o').addClass('indication');
+    currentAutoPlay = false;
   });
 
   $('#enableAutoPlay').on('click', () => {
-    $('#enableAutoPlay').hide();
-    $('#disableAutoPlay').show();
-    autoplay = true;
+    $('.fa-stop-circle-o').removeClass('indication');
+    $('.fa-play-circle').removeClass('indication');
+    $('.fa-play').removeClass('indication');
+    $('.fa-repeat').removeClass('indication');
+    // $('#enableAutoPlay').hide();
+    // $('#disableAutoPlay').show();
+    $('.fa-play-circle-o').addClass('indication');
+    currentAutoPlay = true;
     player.restart();
     player.play();
+    saveExtSettings();
   });
 
   $('#loopAll').on('click', () => {
+    $('.fa-play-circle-o').removeClass('indication');
+    $('.fa-stop-circle-o').removeClass('indication');
+    $('.fa-play-circle').removeClass('indication');
+    $('.fa-play').removeClass('indication');
+    $('.fa-repeat').addClass('indication');
     player.play();
+    currentLoopAll = true;
+    saveExtSettings();
   });
 
   $('#loopOne').on('click', () => {
-    loopOne = true;
+    $('.fa-play-circle-o').removeClass('indication');
+    $('.fa-stop-circle-o').removeClass('indication');
+    $('.fa-repeat').removeClass('indication');
+    $('.fa-play').removeClass('indication');
+    $('.fa-play-circle').addClass('indication');
+    currentLoopOne = true;
+    saveExtSettings();
   });
 
   $('#noLoop').on('click', () => {
-    autoplay = false;
+    $('.fa-play-circle-o').removeClass('indication');
+    $('.fa-stop-circle-o').removeClass('indication');
+    $('.fa-repeat .fa-lg').removeClass('indication');
+    $('.fa-play-circle').removeClass('indication');
+    $('.fa-play').addClass('indication');
+    currentAutoPlay = false;
     player.stop();
+    saveExtSettings();
   });
 });

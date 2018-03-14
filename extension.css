@@ -22,3 +22,7 @@ html, body {
     padding: 0px;
     background-color: black;
 }
+
+.indication {
+  color: #fa3e3e;
+}
