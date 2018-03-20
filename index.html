@@ -15,8 +15,8 @@
   <script type="text/javascript" src="main.js"></script>
 </head>
 <body>
-<div id="main">
-  <div class="js-plyr"></div>
+<div id="main" style="position: relative;">
+  <div class="js-plyr" style="position: absolute; top: 50%; transform: translateY(-50%);"></div>
 </div>
 <div class="btn-group dropup extMainMenu">
   <button type="button" id="viewerMainMenuButton" class="btn roundButton dropdown-toggle viewerMainMenuButton"
@@ -29,20 +29,21 @@
       &nbsp
     </li>
     <li class="divider"></li>
-    <li><a id="disableAutoPlay">
-      <i class="fa fa-stop-circle-o fa-lg fa-fw"></i>&nbsp;<span data-i18n="disableAutoPlay"></span>
-    </a></li>
     <li><a id="enableAutoPlay">
-      <i class="fa fa-play-circle-o fa-lg fa-fw"></i>&nbsp;<span data-i18n="enableAutoPlay"></span>
+      <i class="fa fa-square-o fa-lg fa-fw"></i>&nbsp;<span data-i18n="enabledAutoPlay"></span>
     </a></li>
+    <li><a id="disableAutoPlay">
+      <i class="fa fa-check-square fa-lg fa-fw"></i>&nbsp;<span data-i18n="enabledAutoPlay"></span>
+    </a></li>
+    <li class="divider"></li>
     <li><a id="loopAll">
-      <i class="fa fa-repeat fa-lg fa-fw"></i>&nbsp;<span data-i18n="loopAll"></span>
+      <i class="fa fa-circle-o fa-lg fa-fw"></i>&nbsp;<span data-i18n="loopAll"></span>
     </a></li>
     <li><a id="loopOne">
-      <i class="fa fa-play-circle fa-lg fa-fw"></i>&nbsp;<span data-i18n="loopOne"></span>
+      <i class="fa fa-circle-o fa-lg fa-fw"></i>&nbsp;<span data-i18n="loopOne"></span>
     </a></li>
     <li><a id="noLoop">
-      <i class="fa fa-play fa-lg fa-fw"></i>&nbsp;<span data-i18n="noLoop"></span>
+      <i class="fa fa-circle-o fa-lg fa-fw"></i>&nbsp;<span data-i18n="noLoop"></span>
     </a></li>
     <li class="divider"></li>
     <li><a id="aboutButton">
