@@ -22,7 +22,7 @@ $(document).ready(() => {
 
   window.addEventListener('resume', (e) => {
     // console.log('Receive resume event', e);
-    if (resume === true && e.detail === true) {
+    if (resume) { //  && e.detail === true
       resume = false;
       player.play();
     } else {
