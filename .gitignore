@@ -50,3 +50,5 @@ libs/**/demo/*
 libs/**/bower.json
 libs/**/gulpfile*
 libs/**/bundles*
+
+/.idea
