@@ -102,7 +102,7 @@ $(document).ready(() => {
     </div>`;
 
     const options = {
-      html: controlsHTML,
+      //controls: controlsHTML,
       title: 'TagSpaces',
       tooltips: {
         controls: false
@@ -112,17 +112,17 @@ $(document).ready(() => {
         defaultActive: true
       },
       hideControls: false,
-      keyboardShortcuts: { focused: true, global: false }
+      //keyboardShortcuts: { focused: true, global: false }
     };
 
-    let controls = $('<video controls>');
+    let controls = $('<video controls id="player">');
     if (extensionSupportedFileTypesAudio.indexOf(ext) !== -1) {
-      controls = $('<audio controls>');
+      controls = $('<audio controls id="player">');
     }
     controls.append('<source>').attr('src', filePath);
     $(document).find('.js-plyr').append(controls);
 
-    player = plyr.setup('.js-plyr', options)[0];
+    player = new Plyr('#player', options); // plyr.setup('.js-plyr', options)[0]; //new Plyr('#js-plyr');
 
     // player.autoplay = autoPlayEnabled;
 
