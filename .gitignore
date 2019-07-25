@@ -46,7 +46,7 @@ libs/**/*.slim.js
 libs/**/*.slim.min.js
 libs/**/*.slim.min.map
 libs/**/.*
-libs/**/demo/*
+libs/**/demo/
 libs/**/bower.json
 libs/**/gulpfile*
 libs/**/bundles*
