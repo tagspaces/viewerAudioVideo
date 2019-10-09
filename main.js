@@ -3,7 +3,6 @@
 
 /* globals plyr, initI18N, getParameterByName, $, sendMessageToHost */
 
-//$(document).ready(() => {
 document.addEventListener('DOMContentLoaded', () => {
   const locale = getParameterByName('locale');
   const filePath = getParameterByName('file') || 'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4';
@@ -13,12 +12,24 @@ document.addEventListener('DOMContentLoaded', () => {
   let autoPlayEnabled = true;
   let loop = 'loopAll'; // loopOne, noLoop, loopAll
   let player;
+  let resume;
 
   initI18N(locale, 'ns.viewerAudioVideo.json');
 
   loadExtSettings();
   initPlayer();
   initMenu();
+
+  window.addEventListener('resume', (e) => {
+    // console.log('Receive resume event', e);
+    if (resume) { //  && e.detail === true
+      resume = false;
+      player.play();
+    } else {
+      resume = true;
+      player.pause();
+    }
+  });
 
   function initPlayer() {
     const options = {
