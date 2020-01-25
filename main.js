@@ -3,33 +3,38 @@
 
 /* globals plyr, initI18N, getParameterByName, $, sendMessageToHost */
 
+let player;
+let resume;
+
+function togglePlay() {
+  if (!player) {
+    return;
+  }
+  if (resume) {
+    resume = false;
+    player.play();
+  } else {
+    resume = true;
+    player.pause();
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const locale = getParameterByName('locale');
-  const filePath = getParameterByName('file') || 'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4';
+  const filePath =
+    getParameterByName('file') ||
+    'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4';
   // const ext = filePath.split('.').pop().toLowerCase();
   // const extensionSupportedFileTypesAudio = ['mp3', 'ogg', 'flac'];
   // const extensionSupportedFileTypesVideo = ['mp4', 'webm', 'ogv', 'm4v'];
   let autoPlayEnabled = true;
   let loop = 'loopAll'; // loopOne, noLoop, loopAll
-  let player;
-  let resume;
 
   initI18N(locale, 'ns.viewerAudioVideo.json');
 
   loadExtSettings();
   initPlayer();
   initMenu();
-
-  window.addEventListener('resume', (e) => {
-    // console.log('Receive resume event', e);
-    if (resume) { //  && e.detail === true
-      resume = false;
-      player.play();
-    } else {
-      resume = true;
-      player.pause();
-    }
-  });
 
   function initPlayer() {
     const options = {
@@ -43,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'current-time', // The current time of playback
         'duration', // The full duration of the media
         'mute', // Toggle mute
-        'volume', // Volume control
+        'volume' // Volume control
         // 'captions', // Toggle captions
         // 'settings', // Settings menu
         // 'pip', // Picture-in-picture (currently Safari only)
@@ -70,7 +75,9 @@ document.addEventListener('DOMContentLoaded', () => {
     //   fileSource = $('<audio controls id="player">');
     // }
     fileSource.append('<source>').attr('src', filePath);
-    $(document).find('.js-plyr').append(fileSource);
+    $(document)
+      .find('.js-plyr')
+      .append(fileSource);
 
     player = new Plyr('#player', options);
 
@@ -94,7 +101,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function loadExtSettings() {
-    const extSettings = JSON.parse(localStorage.getItem('viewerAudioVideoSettings'));
+    const extSettings = JSON.parse(
+      localStorage.getItem('viewerAudioVideoSettings')
+    );
     if (extSettings) {
       autoPlayEnabled = extSettings.autoPlayEnabled;
       loop = extSettings.loop;
@@ -111,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
       $('#disableAutoPlay').hide();
     }
 
-    $('#enableAutoPlay').on('click', (e) => {
+    $('#enableAutoPlay').on('click', e => {
       e.stopPropagation();
       $('#enableAutoPlay').hide();
       $('#disableAutoPlay').show();
@@ -119,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
       saveExtSettings();
     });
 
-    $('#disableAutoPlay').on('click', (e) => {
+    $('#disableAutoPlay').on('click', e => {
       e.stopPropagation();
       $('#disableAutoPlay').hide();
       $('#enableAutoPlay').show();
@@ -129,48 +138,84 @@ document.addEventListener('DOMContentLoaded', () => {
 
     switch (loop) {
       case 'loopAll':
-        $('#loopAll .fa').removeClass('fa-circle-o').addClass('fa-check-circle-o');
-        $('#loopOne .fa').removeClass('fa-check-circle-o').addClass('fa-circle-o');
-        $('#noLoop .fa').removeClass('fa-check-circle-o').addClass('fa-circle-o');
+        $('#loopAll .fa')
+          .removeClass('fa-circle-o')
+          .addClass('fa-check-circle-o');
+        $('#loopOne .fa')
+          .removeClass('fa-check-circle-o')
+          .addClass('fa-circle-o');
+        $('#noLoop .fa')
+          .removeClass('fa-check-circle-o')
+          .addClass('fa-circle-o');
         break;
       case 'loopOne':
-        $('#loopAll .fa').removeClass('fa-check-circle-o').addClass('fa-circle-o');
-        $('#loopOne .fa').removeClass('fa-circle-o').addClass('fa-check-circle-o');
-        $('#noLoop .fa').removeClass('fa-check-circle-o').addClass('fa-circle-o');
+        $('#loopAll .fa')
+          .removeClass('fa-check-circle-o')
+          .addClass('fa-circle-o');
+        $('#loopOne .fa')
+          .removeClass('fa-circle-o')
+          .addClass('fa-check-circle-o');
+        $('#noLoop .fa')
+          .removeClass('fa-check-circle-o')
+          .addClass('fa-circle-o');
         break;
       case 'noLoop':
-        $('#loopAll .fa').removeClass('fa-check-circle-o').addClass('fa-circle-o');
-        $('#loopOne .fa').removeClass('fa-check-circle-o').addClass('fa-circle-o');
-        $('#noLoop .fa').removeClass('fa-circle-o').addClass('fa-check-circle-o');
+        $('#loopAll .fa')
+          .removeClass('fa-check-circle-o')
+          .addClass('fa-circle-o');
+        $('#loopOne .fa')
+          .removeClass('fa-check-circle-o')
+          .addClass('fa-circle-o');
+        $('#noLoop .fa')
+          .removeClass('fa-circle-o')
+          .addClass('fa-check-circle-o');
         break;
       default:
         break;
     }
 
-    $('#loopAll').on('click', (e) => {
+    $('#loopAll').on('click', e => {
       e.stopPropagation();
-      $('#loopAll .fa').removeClass('fa-circle-o').addClass('fa-check-circle-o');
-      $('#loopOne .fa').removeClass('fa-check-circle-o').addClass('fa-circle-o');
-      $('#noLoop .fa').removeClass('fa-check-circle-o').addClass('fa-circle-o');
+      $('#loopAll .fa')
+        .removeClass('fa-circle-o')
+        .addClass('fa-check-circle-o');
+      $('#loopOne .fa')
+        .removeClass('fa-check-circle-o')
+        .addClass('fa-circle-o');
+      $('#noLoop .fa')
+        .removeClass('fa-check-circle-o')
+        .addClass('fa-circle-o');
       loop = 'loopAll';
       autoPlayEnabled = false;
       saveExtSettings();
     });
 
-    $('#loopOne').on('click', (e) => {
+    $('#loopOne').on('click', e => {
       e.stopPropagation();
-      $('#loopAll .fa').removeClass('fa-check-circle-o').addClass('fa-circle-o');
-      $('#loopOne .fa').removeClass('fa-circle-o').addClass('fa-check-circle-o');
-      $('#noLoop .fa').removeClass('fa-check-circle-o').addClass('fa-circle-o');
+      $('#loopAll .fa')
+        .removeClass('fa-check-circle-o')
+        .addClass('fa-circle-o');
+      $('#loopOne .fa')
+        .removeClass('fa-circle-o')
+        .addClass('fa-check-circle-o');
+      $('#noLoop .fa')
+        .removeClass('fa-check-circle-o')
+        .addClass('fa-circle-o');
       loop = 'loopOne';
       saveExtSettings();
     });
 
-    $('#noLoop').on('click', (e) => {
+    $('#noLoop').on('click', e => {
       e.stopPropagation();
-      $('#loopAll .fa').removeClass('fa-check-circle-o').addClass('fa-circle-o');
-      $('#loopOne .fa').removeClass('fa-check-circle-o').addClass('fa-circle-o');
-      $('#noLoop .fa').removeClass('fa-circle-o').addClass('fa-check-circle-o');
+      $('#loopAll .fa')
+        .removeClass('fa-check-circle-o')
+        .addClass('fa-circle-o');
+      $('#loopOne .fa')
+        .removeClass('fa-check-circle-o')
+        .addClass('fa-circle-o');
+      $('#noLoop .fa')
+        .removeClass('fa-circle-o')
+        .addClass('fa-check-circle-o');
       loop = 'noLoop';
       saveExtSettings();
     });
