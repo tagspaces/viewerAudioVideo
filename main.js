@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // const extensionSupportedFileTypesAudio = ['mp3', 'ogg', 'flac'];
   // const extensionSupportedFileTypesVideo = ['mp4', 'webm', 'ogv', 'm4v'];
   let autoPlayEnabled = true;
+  let enableVideoOutput = true;
   let loop = 'loopAll'; // loopOne, noLoop, loopAll
 
   initI18N(locale, 'ns.viewerAudioVideo.json');
@@ -70,7 +71,9 @@ document.addEventListener('DOMContentLoaded', () => {
       fullscreen: { enabled: false }
     };
 
-    let fileSource = $('<video controls id="player">');
+    const fileSource = enableVideoOutput
+      ? $('<video controls id="player">')
+      : $('<audio controls id="player">');
     // if (extensionSupportedFileTypesAudio.indexOf(ext) !== -1) {
     //   fileSource = $('<audio controls id="player">');
     // }
@@ -95,6 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function saveExtSettings() {
     const settings = {
       autoPlayEnabled,
+      enableVideoOutput,
       loop
     };
     localStorage.setItem('viewerAudioVideoSettings', JSON.stringify(settings));
@@ -106,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     );
     if (extSettings) {
       autoPlayEnabled = extSettings.autoPlayEnabled;
+      enableVideoOutput = extSettings.enableVideoOutput;
       loop = extSettings.loop;
     }
     // console.log('Settings loaded ap ' + autoPlayEnabled + ' - ' + JSON.stringify(extSettings));
@@ -134,6 +139,32 @@ document.addEventListener('DOMContentLoaded', () => {
       $('#enableAutoPlay').show();
       autoPlayEnabled = false;
       saveExtSettings();
+    });
+
+    if (enableVideoOutput) {
+      $('#enableVideoOutput').hide();
+      $('#disableVideoOutput').show();
+    } else {
+      $('#enableVideoOutput').show();
+      $('#disableVideoOutput').hide();
+    }
+
+    $('#disableVideoOutput').on('click', e => {
+      e.stopPropagation();
+      $('#disableVideoOutput').hide();
+      $('#enableVideoOutput').show();
+      enableVideoOutput = false;
+      saveExtSettings();
+      document.location.reload();
+    });
+
+    $('#enableVideoOutput').on('click', e => {
+      e.stopPropagation();
+      $('#enableVideoOutput').hide();
+      $('#disableVideoOutput').show();
+      enableVideoOutput = true;
+      saveExtSettings();
+      document.location.reload();
     });
 
     switch (loop) {
