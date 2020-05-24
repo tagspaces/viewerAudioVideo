@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 /* Copyright (c) 2013-present The TagSpaces Authors.
  * Use of this source code is governed by the MIT license which can be found in the LICENSE.txt file. */
 
@@ -53,9 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // 'captions', // Toggle captions
         // 'settings', // Settings menu
         // 'pip', // Picture-in-picture (currently Safari only)
-        //'airplay', // Airplay (currently Safari only)
-        //'download', // Show a download button with a link to either the current source or a custom URL you specify in your options
-        //'fullscreen', // Toggle fullscreen
+        // 'airplay', // Airplay (currently Safari only)
+        // 'download', // Show a download button with a link to either the current source or a custom URL you specify in your options
+        // 'fullscreen', // Toggle fullscreen
       ],
       title: 'TagSpaces',
       // tooltips: {
@@ -108,12 +109,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const extSettings = JSON.parse(
       localStorage.getItem('viewerAudioVideoSettings')
     );
-    if (extSettings) {
+    if (extSettings && extSettings.autoPlayEnabled !== undefined) {
       autoPlayEnabled = extSettings.autoPlayEnabled;
+    }
+
+    if (extSettings && extSettings.enableVideoOutput !== undefined) {
       enableVideoOutput = extSettings.enableVideoOutput;
+    }
+    if (extSettings && extSettings.loop) {
       loop = extSettings.loop;
     }
-    // console.log('Settings loaded ap ' + autoPlayEnabled + ' - ' + JSON.stringify(extSettings));
+    // console.log('Settings loaded: ' + JSON.stringify(extSettings));
   }
 
   function initMenu() {
