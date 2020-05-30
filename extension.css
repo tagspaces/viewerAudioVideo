@@ -1,25 +1,31 @@
 @import '../legacy-ext/common.css';
 
-html, body {
-    height: 100%;
-    width: 100%;
-    margin: 0px;
-    padding: 0px;
-    background-color: black;
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  background-color: black;
 }
 
 #main {
-    height: 100%;
-    width: 100%;
-    margin: 0px;
-    padding: 0px;
-    background-color: black;
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  background-color: black;
 }
 
 /* Remove to make the player's toolbar aligned to the bottom */
 .plyr__controls {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0)) !important;
   top: 0 !important;
   bottom: unset !important;
   padding-top: 25px !important;
+}
+
+:root {
+  --plyr-color-main: #1dd19f;
+  --plyr-audio-controls-background: black;
+  --plyr-audio-control-color: white;
 }

@@ -5,24 +5,16 @@
   "type": "viewer",
   "version": "1.0.0",
   "dependencies": {
-    "plyr": "~2.0.18"
+    "plyr": "~3.6.2"
   },
   "devDependencies": {},
   "authors": [
     "TagSpaces Authors - http://tagspaces.org",
     "Ilian Sapundshiev - http://ilian.me"
   ],
-  "keywords": [
-    "player",
-    "ogv",
-    "ogg"
-  ],
+  "keywords": ["player", "ogv", "ogg"],
   "license": "MIT",
-  "main": [
-    "main.js"
-  ],
-  "ignore": [
-    "Gruntfile.js"
-  ],
+  "main": ["main.js"],
+  "ignore": ["Gruntfile.js"],
   "private": true
 }
