@@ -131,6 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
       $('#disableAutoPlay').hide();
     }
 
+    $('#enableAutoPlay').off();
     $('#enableAutoPlay').on('click', e => {
       e.stopPropagation();
       $('#enableAutoPlay').hide();
@@ -139,6 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
       saveExtSettings();
     });
 
+    $('#disableAutoPlay').off();
     $('#disableAutoPlay').on('click', e => {
       e.stopPropagation();
       $('#disableAutoPlay').hide();
@@ -155,6 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
       $('#disableVideoOutput').hide();
     }
 
+    $('#disableVideoOutput').off();
     $('#disableVideoOutput').on('click', e => {
       e.stopPropagation();
       $('#disableVideoOutput').hide();
@@ -164,6 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.location.reload();
     });
 
+    $('#enableVideoOutput').off();
     $('#enableVideoOutput').on('click', e => {
       e.stopPropagation();
       $('#enableVideoOutput').hide();
@@ -211,6 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
         break;
     }
 
+    $('#loopAll').off();
     $('#loopAll').on('click', e => {
       e.stopPropagation();
       $('#loopAll .fa')
@@ -227,6 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
       saveExtSettings();
     });
 
+    $('#loopOne').off();
     $('#loopOne').on('click', e => {
       e.stopPropagation();
       $('#loopAll .fa')
@@ -242,6 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
       saveExtSettings();
     });
 
+    $('#noLoop').off();
     $('#noLoop').on('click', e => {
       e.stopPropagation();
       $('#loopAll .fa')
