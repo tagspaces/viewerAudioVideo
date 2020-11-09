@@ -6,7 +6,6 @@ body {
   width: 100%;
   margin: 0px;
   padding: 0px;
-  background-color: black;
 }
 
 #main {
@@ -14,7 +13,6 @@ body {
   width: 100%;
   margin: 0px;
   padding: 0px;
-  background-color: black;
 }
 
 /* Remove to make the player's toolbar aligned to the bottom */
