@@ -1,3 +1,5 @@
+This repository is archived. Please use https://github.com/tagspaces/tagspaces-extensions instead.
+
 # Audio Video Player for TagSpaces
 
 A TagSpaces extension allowing playing of audio and video files.
